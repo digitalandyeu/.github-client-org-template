@@ -1,44 +1,23 @@
-# Github Organization public profile template generator
+# GitHub Organization public profile template
 
 [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine)
 [![GitPod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/digitalandyeu/.github-client-org-template)
 
-Use this template repository to generate [@digitalandyeu](https://github.com/digitalandyeu) client's public GitHub organisation repository
+A template to generate [@digitalandyeu](https://github.com/digitalandyeu) client's public GitHub organisation repository.
 
-## Principles
-
--   Uses [GitHub Action]()
-
-## Usage
+Generates the [`profile/README.md`](./profile/README.md) file based on the [`data.json`](./data.example.json) file.
 
 ```bash
 # Install deps
 npm install
 
-# Copy the data example file
-cp data.example.js data.js
-
-# or symlink it
-symlink data.example.js data.js
+# symlink data example for local development
+ln -s data.example.json data.json
 ```
 
-## Local
-
-```bash
-# Install deps
-npm install
-
-# or symlink it
-symlink data.example.js data.js
-```
-
-Make your changes to the [`data.js`](./data.js) file and push it to the repository.
+Make your changes to the [`data.json`](./data.json) file and push it to the repository.
 
 ```bash
 # Commit and push the ignored data.js file changes
-git add data.js && git commit -m "Add data.js" && git push
+git add data.json -f && git commit -m "Add data.json" && git push
 ```
-
-## Data supported
-
-See [data.example.js](./data.example.js) for supported data.

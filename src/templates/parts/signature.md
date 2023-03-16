@@ -1,3 +1,3 @@
 ---
 
-Maintained by [@digitalandyeu](https://github.com/digitalandyeu) since {%name_full%}. All rights reserved.
+Maintained by [@digitalandyeu](https://github.com/digitalandyeu) since {{YEAR}} All rights reserved.

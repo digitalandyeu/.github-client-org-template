@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "npm run prepare",
     "build": "node build.js",
-    "prepare": "husky install",
+    "prepare": "husky install && ln -s data.example.json data.json",
     "lint": "eslint . --fix && prettier . --write",
     "pre-commit": "npm run lint"
   },

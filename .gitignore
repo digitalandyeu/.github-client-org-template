@@ -1,0 +1,5 @@
+node_modules
+.temp
+.husky/_
+.idea
+data.js

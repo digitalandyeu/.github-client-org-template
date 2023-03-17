@@ -24,11 +24,8 @@
   },
   "homepage": "https://github.com/digitalandyeu/.github-client-org-template#readme",
   "devDependencies": {
+    "handlebars": "^4.7.7",
     "husky": "^8.0.3",
-    "mustache": "^4.2.0",
     "prettier": "^2.8.4"
-  },
-  "dependencies": {
-    "handlebars": "^4.7.7"
   }
 }

@@ -1,68 +1,118 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Build the profile
+name: Node.js CI
+
+env:
+    NODE_VERSION: v18.13.0
 
 on:
-    # Runs on pushes targeting the default branch
     push:
-        branches: ['main']
+        branches: [src]
+    pull_request:
+        branches: [src]
 
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-    contents: read
-    pages: write
-    id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-    group: 'pages'
-    cancel-in-progress: false
+# Read the https://joht.github.io/johtizen/build/2022/01/20/github-actions-push-into-repository.html#prerequisites
+# Git auto commit action https://github.com/EndBug/add-and-commit
 
 jobs:
-    # Single deploy job since we're just deploying
-    deploy:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+    build:
         runs-on: ubuntu-latest
+
+        permissions: # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+            contents: write
+
         steps:
-            - name: Setup Node.js environment
-              uses: actions/setup-node@v3.6.0
+            - uses: actions/checkout@v3
               with:
-                  # Set always-auth in npmrc.
-                  # always-auth: # optional, default is false
-                  # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-                  # node-version: # optional
-                  # File containing the version Spec of the version to use.  Examples: .nvmrc, .node-version, .tool-versions.
-                  node-version-file: .nvmrc
-                  # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
-                  # architecture: # optional
-                  # Set this option if you want the action to check for the latest available version that satisfies the version spec.
-                  # check-latest: # optional
-                  # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
-                  # registry-url: # optional
-                  # Optional scope for authenticating against scoped registries. Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
-                  # scope: # optional
-                  # Used to pull node distributions from node-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
-                  # token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
-                  # # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-                  cache: true
-                  # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
-                  # cache-dependency-path: # optional
-                  run: |
-                      npm install
-                      npm run build
-            - name: GIT commit and push all built files
-              env:
-                  CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-                  CI_COMMIT_AUTHOR: Continuous Integration
-              run: |
-                  git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-                  git config --global user.email "username@users.noreply.github.com"
-                  git add profile/README.md -f
-                  git add profile/public -f
-                  git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
-                  git push
+                  ref: ${{ github.head_ref }}
+
+            - name: set env
+              run: echo echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
+
+            - name: Use Node.js ${{ env.NODE_VERSION }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+            - run: |
+                  npm ci
+                  npm run build
+
+            - run: |
+                cp ./profile/README.md ./README.md
+                rm -rf ./.editorconfig ./.gitignore ./.prettier* ./github ./husky ./src ./*.json ./*.js
+                git rm -rf ./.editorconfig ./.gitignore ./.prettier* ./github ./husky ./src ./*.json ./*.js
+
+            - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+              with:
+                  # The arguments for the `git add` command (see the paragraph below for more info)
+                  # Default: '.'
+                  add: './profile ./README.md -f'
+
+                  # The name of the user that will be displayed as the author of the commit.
+                  # Default: depends on the default_author input
+                  # author_name: Github Build Bot
+
+                  # The email of the user that will be displayed as the author of the commit.
+                  # Default: depends on the default_author input
+                  # author_email: mail@example.com
+
+                  # Additional arguments for the git commit command. The --message argument is already set by the message input.
+                  # Default: ''
+                  # commit: --signoff
+
+                  # The name of the custom committer you want to use, if different from the author of the commit.
+                  # Default: the name of the author (set with either author_name or default_author)
+                  # committer_name: Committer Name
+
+                  # The email of the custom committer you want to use, if different from the author of the commit.
+                  # Default: the email of the author (set with either author_email or default_author)
+                  # committer_email: mail@example.com
+
+                  # The local path to the directory where your repository is located. You should use actions/checkout first to set it up.
+                  # Default: '.'
+                  # cwd: './path/to/the/repo'
+
+                  # Determines the way the action fills missing author name and email. Three options are available:
+                  # - github_actor -> UserName <UserName@users.noreply.github.com>
+                  # - user_info -> Your Display Name <your-actual@email.com>
+                  # - github_actions -> github-actions <email associated with the github logo>
+                  # Default: github_actor
+                  # default_author: github_actor
+
+                  # Arguments for the git fetch command. If set to false, the action won't fetch the repo.
+                  # For more info as to why fetching is usually recommended, please see the "Performance on large repos" FAQ.
+                  # Default: --tags --force
+                  # fetch: false
+
+                  # The message for the commit.
+                  # Default: 'Commit from GitHub Actions (name of the workflow)'
+                  message: Build ${{ env.NOW }}
+
+                  # If this input is set, the action will push the commit to a new branch with this name.
+                  # Default: ''
+                  new_branch: master
+
+                  # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
+                  # - ignore -> errors will be logged but the step won't fail
+                  # - exitImmediately -> the action will stop right away, and the step will fail
+                  # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
+                  # Default: ignore
+                  # pathspec_error_handling: ignore
+
+                  # Arguments for the git pull command. By default, the action does not pull.
+                  # Default: ''
+                  # pull: '--rebase --autostash ...'
+
+                  # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
+                  # Default: true
+                  # push: false
+
+                  # The arguments for the `git rm` command (see the paragraph below for more info)
+                  # Default: ''
+                  remove: './.editorconfig ./.gitignore ./.prettier* ./github ./husky ./src ./*.json ./*.js -f'
+
+                  # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
+                  # Default: ''
+                  tag: 'v${{ env.NOW }}'
+
+                  # Arguments for the git push --tags command (any additional argument will be added after --tags)
+                  # Default: ''
+                  tag_push: '--force'

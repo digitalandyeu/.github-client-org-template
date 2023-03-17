@@ -22,10 +22,9 @@ export function hbs(templateFile = 'profile/README.md', distFolder = basePath) {
 	fs.writeFileSync(`${distFolder}/${templateFile}`, hbsTemplateCompile(`${templateFile}.hbs`))
 }
 
-// await fetch('https://raw.githubusercontent.com/digitalandyeu/.github/main/public/humans.txt').then((res) => console.log(res.body))
-
 // Generate the public .json files
 fs.writeFileSync(`${pathPublicData}/github.json`, JSON.stringify(data, null, 2))
 
 // Generate the public profile README.md file
-hbs()
+hbs('profile/README.md')
+hbs('profile/public/humans.txt')

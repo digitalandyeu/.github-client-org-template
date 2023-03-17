@@ -3,11 +3,14 @@
   "version": "1.0.1",
   "description": "This template repository create client's public GitHub organisation repository",
   "main": "build.js",
+  "type": "module",
   "scripts": {
+    "clean": "rm -rf profile/README.md && rm -rf profile/public/data/github.json",
     "postinstall": "npm run prepare",
     "build": "node build.js",
+    "rebuild": "npm run clean && npm run build",
     "prepare": "husky install && ln -s data.example.json data.json",
-    "lint": "eslint . --fix && prettier . --write",
+    "lint": "prettier . --write",
     "pre-commit": "npm run lint"
   },
   "repository": {
@@ -21,9 +24,11 @@
   },
   "homepage": "https://github.com/digitalandyeu/.github-client-org-template#readme",
   "devDependencies": {
-    "eslint": "^8.36.0",
     "husky": "^8.0.3",
     "mustache": "^4.2.0",
     "prettier": "^2.8.4"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7"
   }
 }

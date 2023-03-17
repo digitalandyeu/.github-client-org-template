@@ -5,19 +5,21 @@
 
 A template to generate [@digitalandyeu](https://github.com/digitalandyeu) client's public GitHub organisation repository.
 
-Generates the [`profile/README.md`](./profile/README.md) file based on the [`data.json`](./data.example.json) file.
+Generates the [`profile/README.md`](./profile/README.md) file based on the [`data.example.json`](./profile/public/data/github.json) file.
 
 ```bash
 # Install deps
 npm install
 
 # symlink data example for local development
-ln -s data.example.json data.json
+ln -s data.example.json public/data/org.json
 ```
 
-Make your changes to the [`data.json`](./data.json) file and push it to the repository.
+Make your changes to the [`public/data/org.json`](profile/public/data/generated/org.json) file and push it to the repository.
 
 ```bash
-# Commit and push the ignored data.js file changes
-git add data.json -f && git commit -m "Add data.json" && git push
+# Commit and push the ignored data.example.js file changes
+git add public/data/org.json -f && git commit -m "add public/data/org.json" && git push
 ```
+
+[Tiny Figma design starter](https://www.figma.com/file/0AdHJVIm34eSJ0eRissQfe/Starter-%3A-Web?node-id=0%3A1&t=2H9vpif7XKQGlwfp-1)

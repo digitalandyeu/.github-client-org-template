@@ -3,3 +3,7 @@ node_modules
 .husky/_
 .idea
 data.json
+
+# Generated
+profile/public/data/github.json
+profile/README.md

@@ -35,6 +35,8 @@ jobs:
             - run: |
                   cp ./profile/README.md ./README.md
                   rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js
+                  ls -lsa
+                  cd profile && ls -lsa
 
             - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
               with:

@@ -35,14 +35,15 @@ jobs:
             - run: |
                   cp ./profile/README.md ./README.md
                   rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js
+                  git rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js --cached
                   ls -lsa
-                  cd profile && ls -lsa
+                  cd profile && ls -lsa && cd ..
 
             - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
               with:
                   # The arguments for the `git add` command (see the paragraph below for more info)
                   # Default: '.'
-                  add: './profile ./README.md -f'
+                  add: '. -f'
 
                   # The name of the user that will be displayed as the author of the commit.
                   # Default: depends on the default_author input
@@ -82,7 +83,7 @@ jobs:
 
                   # The message for the commit.
                   # Default: 'Commit from GitHub Actions (name of the workflow)'
-                  message: Build from GitHub Actions (Node.js CI)
+                  message: Build ${{ github.head_ref }} branch
 
                   # If this input is set, the action will push the commit to a new branch with this name.
                   # Default: ''

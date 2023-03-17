@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Build public organization profile
 
 env:
     NODE_VERSION: v18.13.0
@@ -34,8 +34,8 @@ jobs:
 
             - run: |
                   cp ./profile/README.md ./README.md
-                  rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js ./node_modules
-                  git rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js ./node_modules --cached
+                  rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js ./node_module*
+                  git rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js ./node_module* --cached
                   ls -lsa
 
             - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.

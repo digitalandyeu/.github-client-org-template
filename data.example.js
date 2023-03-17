@@ -12,7 +12,7 @@ export default {
 			title: false,
 			items: [
 				{
-					title: 'Figma design',
+					title: 'Figma starter',
 					href: 'https://www.figma.com/file/0AdHJVIm34eSJ0eRissQfe/Starter-%3A-Web?node-id=1%3A12&t=2H9vpif7XKQGlwfp-1',
 				},
 				{

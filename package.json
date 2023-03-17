@@ -9,7 +9,7 @@
     "postinstall": "npm run prepare",
     "build": "node build.js",
     "rebuild": "npm run clean && npm run build",
-    "prepare": "husky install && ln -s data.example.json data.json",
+    "prepare": "husky install",
     "lint": "prettier . --write",
     "pre-commit": "npm run lint"
   },

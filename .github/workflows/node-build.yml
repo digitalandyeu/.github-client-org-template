@@ -24,9 +24,6 @@ jobs:
               with:
                   ref: ${{ github.head_ref }}
 
-            - name: set env
-              run: echo echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
-
             - name: Use Node.js ${{ env.NODE_VERSION }}
               uses: actions/setup-node@v3
               with:
@@ -37,8 +34,7 @@ jobs:
 
             - run: |
                   cp ./profile/README.md ./README.md
-                  rm -rf ./.editorconfig ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js
-                  git rm -rf ./.editorconfig ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js
+                  git rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js
 
             - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
               with:
@@ -88,7 +84,7 @@ jobs:
 
                   # If this input is set, the action will push the commit to a new branch with this name.
                   # Default: ''
-                  new_branch: master
+                  new_branch: main
 
                   # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
                   # - ignore -> errors will be logged but the step won't fail
@@ -111,8 +107,8 @@ jobs:
 
                   # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
                   # Default: ''
-                  tag: 'v${{ env.NOW }}'
+                  # tag: 'v${{ env.NOW }}'
 
                   # Arguments for the git push --tags command (any additional argument will be added after --tags)
                   # Default: ''
-                  tag_push: '--force'
+                  # tag_push: '--force'

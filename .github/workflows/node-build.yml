@@ -33,8 +33,7 @@ jobs:
                   npm run build
 
             - run: |
-                  cat README.md >>
-
+                  cp ./profile/RUNME.md ./README.md
                   rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js ./node_modules
                   git rm -rf ./.editor* ./.gitignore ./.prettier* ./.gith* ./.husky ./src ./*.json ./*.js --cached
                   ls -lsa
